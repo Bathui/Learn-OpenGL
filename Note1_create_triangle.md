@@ -31,32 +31,38 @@
    ### VBO
          Note: we can think openGL as a warehouse
       1. First, request a code for this buffer from OpenGl. **(glGenBuffers(1, &VBO))**
+
       2. Tell openGL type of this buffer by **(GL_ARRAY_BUFFER, VBO)**.
+      
       3. Assign the space in GPU. **(glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW))**
          - GL_STATIC_DRAW: put the buffer once and mostly leave it alone
          - GL_DYNAMIC_DRAW: expect to modify the buffer data frequently
          - GL_STREAM_DRAW: change the data every frame.
    ### VAO
       1. VAO stores how vertex related attributes are stored and draw from gpu
+      
       2. We create the ID of VAO and generate VAO array in gpu. **glGenVertexArrays(1, &VAO);**
+
       3. We bind the VAO generated and all further attributes states are gonna be recorded in this VAO. **glBindVertexArray(VAO);**
+
       4.  ```c++
             glVertexAttribPointer(slot_pos, numberofVertices, GL_FLOAT, GL_FALSE);
             glEnableVertexAttriArray(0);
           ```
 
     ### EBO
-       1. A buffer that stores indices that OpenGL uses to decide what vertices to draw.
-       2. We bind EBO with GL_ELEMENT_ARRAY_BUFFER, which will make it store in VAO.
-       ```c++
-       unsigned int EBO;
-       glGenBuffers(1, &EBO);
-       glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-       ```
-       3. Similar to VBO, we create actual storage inside GPU through the following,
-       ```c++
+   1. A buffer that stores indices that OpenGL uses to decide what vertices to draw.
+   2. We bind EBO with GL_ELEMENT_ARRAY_BUFFER, which will make it store in VAO.
+      ```c++
+      unsigned int EBO;
+      glGenBuffers(1, &EBO);
+      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+      ```
+   
+   3. Similar to VBO, we create actual storage inside GPU through the following,
+      ```c++
       glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC);
-       ```
+      ```
 
 ## How to create a shader
 1. Vertex Shader
@@ -64,7 +70,9 @@
 3. Program
    ### Vertex Shader
    1. create an id **unsigned int vertex_shader = glCreateShader(GL_VERTEX_SHADER);**
+
    2. Use GLSL to get the way to parse the vertex
+
          ```C++
          const char* vertexshadersource = "#version 330 core\n"
                "layout(location = 0) in vec3 aPos;\n"
@@ -77,8 +85,8 @@
    4. Compile the Shader **glCompileShader(vertexShader);**
 
    ## Fragment Shader
-   5. Create an id **unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);**
-   6. glsl to get a way to parse the fragement color
+   1. Create an id **unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);**
+   2. glsl to get a way to parse the fragement color
          ```C++
          const char*fragmentShaderSource = "#version 330 core\n"
          "out vec4 FragColor; \n"
@@ -87,12 +95,12 @@
          "  FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
          "}\n\0";
          ```
-   7. Send GLSL to GPU **glShaderSource(fragment);**
-   8. Compile the fragment shader **glCompileShader(frgamentShader);**
+   3. Send GLSL to GPU **glShaderSource(fragment);**
+   4. Compile the fragment shader **glCompileShader(frgamentShader);**
 
    ## Program (Link vertex shader and fragment shader together)
-   9. create program ID **unsigned int shaderProgram = glCreateProgram()**
-   10. Attach the shader and program together, then link all the shaders.
+   1. create program ID **unsigned int shaderProgram = glCreateProgram()**
+   2. Attach the shader and program together, then link all the shaders.
       ```c++
       glAttachShader(shaderProgram, vertexShader);
       glAttachShader(shaderProgram, fragmentShader);
